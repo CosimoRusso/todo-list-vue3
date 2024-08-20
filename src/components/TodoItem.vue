@@ -1,10 +1,10 @@
 <script setup>
     defineProps({
-        text: String,
-        key: int
+        todoText: String,
+        todoKey: Number
     })
 </script>
 
 <template>
-    <li :key="key">{{ text }}</li>
+    <li :key="todoKey">{{ todoKey }} | {{ todoText }}</li>
 </template>

@@ -21,6 +21,6 @@ function addTodo(){
         <button type="submit">Add</button>
   </form>
   <ul>
-    <TodoItem v-for="todo in todos" :key="todo.id" :text="todo.text" />
+    <TodoItem v-for="todo in todos" :todo-key="todo.todoId" :todo-text="todo.text" />
   </ul>
 </template>
