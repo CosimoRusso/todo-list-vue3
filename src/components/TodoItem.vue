@@ -1,16 +1,39 @@
 <script setup lang="ts">
     defineProps({
-        todoText: String,
-        todoKey: Number
+        todoText: {
+            type: String,
+            required: true
+        },
+        todoKey: {
+            type: Number,
+            required: true
+        },
+        todoDone: {
+            type: Boolean,
+            required: true
+        }
     })
 
-    const emit = defineEmits(['delete-todo'])
+    const emit = defineEmits(['delete-todo', 'check-status-changed'])
 
     function deleteTodo(todoKey: Number): null {
         emit('delete-todo', todoKey)
     }
+
+    function onCheckStatusChanged(todoId: Number, newStatus: Boolean){
+        emit('check-status-changed', todoId, newStatus);
+    }
 </script>
 
 <template>
-    <li :key="todoKey">{{ todoKey }} | {{ todoText }}<button @click="() => deleteTodo(todoKey)">X</button></li>
+    <li :key="todoKey" :class="todoDone ? 'done' : 'not-done'">
+        <input type='checkbox' @change="e => onCheckStatusChanged(todoKey, e.target.checked)"/>
+        {{ todoKey }} | {{ todoText }}
+        <button class="btn-delete" @click="() => deleteTodo(todoKey)">X</button></li>
 </template>
+
+<style>
+    .done {
+        text-decoration: line-through;
+    }
+</style>
