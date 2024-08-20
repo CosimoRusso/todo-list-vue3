@@ -22,6 +22,19 @@ function onTodoStatusChanged(todoId: Number, newStatus: Boolean): null {
         return {...t, done: newStatus}
     })
 }
+
+function markAllAs(done: Boolean): null{
+    todos.value = todos.value.map(t => {
+        return {...t, done}
+    })
+}
+function markAllAsDone(){
+    markAllAs(true);
+}
+function markAllAsNotDone(){
+    markAllAs(false);
+}
+
 </script>
 
 <template>
@@ -39,6 +52,8 @@ function onTodoStatusChanged(todoId: Number, newStatus: Boolean): null {
         @check-status-changed="onTodoStatusChanged"
     />
   </ul>
+  <button @click="markAllAsDone" data-test="all-todos-done">Mark all as done</button>
+  <button @click="markAllAsNotDone" data-test="all-todos-not-done">Mark all as To Do</button>
 </template>
 
 <style>

@@ -40,3 +40,27 @@ describe("Delete Todo", () => {
     cy.getBySel('todo-item').should('not.exist');
   })
 })
+
+describe("Mark all as", () => {
+  beforeEach(() => {
+    cy.visit('/todo')
+    cy.getBySel('todo-text').type("prova 1")
+    cy.getBySel('todo-add-btn').click()
+    cy.getBySel('todo-text').type("prova 2")
+    cy.getBySel('todo-add-btn').click()
+  })
+
+  it("marks all as done", () => {
+    cy.getBySel('all-todos-done').click()
+    cy.getBySel('todo-item').should(
+      'have.class', 'done'
+    );
+  })
+
+  it("marks all as not done", () => {
+    cy.getBySel('all-todos-not-done').click()
+    cy.getBySel('todo-item').should(
+      'have.class', 'not-done'
+    );
+  })
+})
