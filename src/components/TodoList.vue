@@ -13,6 +13,9 @@ function addTodo(){
     todos.value.push(newTodo);
     todoText.value = "";
 }
+function deleteTodo(todoId: Number): null {
+    todos.value = todos.value.filter(e => e.todoId != todoId);
+}
 </script>
 
 <template>
@@ -21,6 +24,11 @@ function addTodo(){
         <button type="submit">Add</button>
   </form>
   <ul>
-    <TodoItem v-for="todo in todos" :todo-key="todo.todoId" :todo-text="todo.text" />
+    <TodoItem 
+        v-for="todo in todos" 
+        :todo-key="todo.todoId" 
+        :todo-text="todo.text" 
+        @delete-todo="deleteTodo"
+    />
   </ul>
 </template>
