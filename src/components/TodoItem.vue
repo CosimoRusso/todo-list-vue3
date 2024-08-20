@@ -26,10 +26,10 @@
 </script>
 
 <template>
-    <li :key="todoKey" :class="todoDone ? 'done' : 'not-done'">
-        <input type='checkbox' @change="e => onCheckStatusChanged(todoKey, e.target.checked)"/>
+    <li :key="todoKey" :class="todoDone ? 'done' : 'not-done'" data-test="todo-item">
+        <input type='checkbox' @change="e => onCheckStatusChanged(todoKey, e.target.checked)" data-test="todo-item-check"/>
         {{ todoKey }} | {{ todoText }}
-        <button class="btn-delete" @click="() => deleteTodo(todoKey)">X</button></li>
+        <button class="btn-delete" @click="() => deleteTodo(todoKey)" data-test="todo-item-delete">X</button></li>
 </template>
 
 <style>

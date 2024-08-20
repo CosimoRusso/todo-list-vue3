@@ -25,9 +25,9 @@ function onTodoStatusChanged(todoId: Number, newStatus: Boolean): null {
 </script>
 
 <template>
-  <form @submit.prevent="addTodo">
-        <input type="text" v-model="todoText" />
-        <button type="submit">Add</button>
+  <form @submit.prevent="addTodo" data-test="todo-add-form">
+        <input type="text" v-model="todoText" data-test="todo-text"/>
+        <button type="submit" data-test="todo-add-btn">Add</button>
   </form>
   <ul>
     <TodoItem 
