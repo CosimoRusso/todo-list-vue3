@@ -14,7 +14,10 @@
         }
     })
 
-    const emit = defineEmits(['delete-todo', 'check-status-changed'])
+    const emit = defineEmits<{
+        (e: 'delete-todo', todoId: Number): void,
+        (e: 'check-status-changed', todoId: Number, newStatus: Boolean)
+    }>()
 
     function deleteTodo(todoKey: Number): null {
         emit('delete-todo', todoKey)
