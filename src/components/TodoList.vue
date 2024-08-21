@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import TodoItem from './TodoItem.vue'
+import TodoAdd from './TodoAdd.vue'
 
 const todoId = ref(0);
 const todoText = ref("");
@@ -38,14 +39,13 @@ function markAllAsNotDone(){
 </script>
 
 <template>
-  <form @submit.prevent="addTodo" data-test="todo-add-form">
-        <input type="text" v-model="todoText" data-test="todo-text"/>
-        <button type="submit" data-test="todo-add-btn">Add</button>
-  </form>
+    <p>{{ todoText }}</p>
+  <TodoAdd v-model:todo-text="todoText" @add-todo="addTodo" />
   <ul>
     <TodoItem 
         v-for="todo in todos" 
-        :todo-key="todo.todoId" 
+        :key="todo.todoId"
+        :todo-key="todo.todoId"
         :todo-text="todo.text"
         :todo-done="todo.done"
         @delete-todo="deleteTodo"
