@@ -1,11 +1,15 @@
 <script setup lang="ts">
-    const todoText = defineModel("todoText")
-    const emit = defineEmits<{
-        (e: 'add-todo'): void,
-    }>()
+import { useTodoListStore } from '@/stores/todoList';
+import { ref } from 'vue';
+
+    const todoText = ref("")
+    const todoStore = useTodoListStore()
+
     function addTodo(){
-        emit('add-todo')
+        todoStore.addTodo(todoText.value);
+        todoText.value = ""
     }
+    
 </script>
 <template>
     <form @submit.prevent="addTodo" data-test="todo-add-form">

@@ -2,54 +2,26 @@
 import { ref } from 'vue';
 import TodoItem from './TodoItem.vue'
 import TodoAdd from './TodoAdd.vue'
+import { useTodoListStore } from '@/stores/todoList';
 
-const todoId = ref(0);
-const todoText = ref("");
+const todoStore = useTodoListStore();
 
-const todos = ref([]);
-
-function addTodo(){
-    if (!todoText.value) return;
-    const newTodo = {todoId: todoId.value++, text: todoText.value, done: false};
-    todos.value.push(newTodo);
-    todoText.value = "";
-}
-function deleteTodo(todoId: Number): null {
-    todos.value = todos.value.filter(e => e.todoId != todoId);
-}
-function onTodoStatusChanged(todoId: Number, newStatus: Boolean): null {
-    todos.value = todos.value.map(t => {
-        if (t.todoId != todoId) return t;
-        return {...t, done: newStatus}
-    })
-}
-
-function markAllAs(done: Boolean): null{
-    todos.value = todos.value.map(t => {
-        return {...t, done}
-    })
-}
 function markAllAsDone(){
-    markAllAs(true);
+    todoStore.markAllAs(true);
 }
 function markAllAsNotDone(){
-    markAllAs(false);
+    todoStore.markAllAs(false);
 }
 
 </script>
 
 <template>
-    <p>{{ todoText }}</p>
-  <TodoAdd v-model:todo-text="todoText" @add-todo="addTodo" />
+  <TodoAdd />
   <ul>
     <TodoItem 
-        v-for="todo in todos" 
-        :key="todo.todoId"
+        v-for="todo in todoStore.todos" 
+        :key="todo.todoId.toString()"
         :todo-key="todo.todoId"
-        :todo-text="todo.text"
-        :todo-done="todo.done"
-        @delete-todo="deleteTodo"
-        @check-status-changed="onTodoStatusChanged"
     />
   </ul>
   <button @click="markAllAsDone" data-test="all-todos-done">Mark all as done</button>

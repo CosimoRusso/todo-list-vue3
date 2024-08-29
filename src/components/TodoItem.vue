@@ -1,37 +1,40 @@
 <script setup lang="ts">
-    defineProps({
-        todoText: {
-            type: String,
-            required: true
-        },
+import { useTodoListStore } from '@/stores/todoList';
+import { computed, type ComputedRef } from 'vue';
+
+    const props = defineProps({
         todoKey: {
             type: Number,
-            required: true
-        },
-        todoDone: {
-            type: Boolean,
             required: true
         }
     })
 
-    const emit = defineEmits<{
-        (e: 'delete-todo', todoId: Number): void,
-        (e: 'check-status-changed', todoId: Number, newStatus: Boolean)
-    }>()
+    const todoStore = useTodoListStore();
 
-    function deleteTodo(todoKey: Number): null {
-        emit('delete-todo', todoKey)
+    function deleteTodo(todoKey: number): void {
+        todoStore.deleteTodo(todoKey);
     }
 
-    function onCheckStatusChanged(todoId: Number, newStatus: Boolean){
-        emit('check-status-changed', todoId, newStatus);
+    function onCheckStatusChanged(todoId: number, newStatus: boolean){
+        todoStore.markTodoAs(todoId, newStatus);
     }
+
+    const currentTodo: ComputedRef<TodoInterface> = computed<TodoInterface>((): TodoInterface => {
+        const element = todoStore.todos.find(t => t.todoId===props.todoKey);
+        if (!element) throw Error("current todo not found");
+        return element
+    })
+
+    const getDoneClass: ComputedRef<string> = computed<string>(() => {
+        return currentTodo.value.done ? 'done' : 'not-done';
+    })
+
 </script>
 
 <template>
-    <li :key="todoKey" :class="todoDone ? 'done' : 'not-done'" data-test="todo-item">
+    <li :key="todoKey" :class="getDoneClass" data-test="todo-item">
         <input type='checkbox' @change="e => onCheckStatusChanged(todoKey, e.target.checked)" data-test="todo-item-check"/>
-        {{ todoKey }} | {{ todoText }}
+        {{ todoKey }} | {{ currentTodo.text }}
         <button class="btn-delete" @click="() => deleteTodo(todoKey)" data-test="todo-item-delete">X</button></li>
 </template>
 
